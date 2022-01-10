@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+#IDK but I dont want em
+*.ilk
+*.pdb
