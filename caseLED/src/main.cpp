@@ -61,6 +61,8 @@ void loop() {
   static int prevSwitchThreeState = LOW;
 
   static bool powered = true;
+  static int mode = 0; // current mode
+  static int modes = 4; // total modes
 
   // check the switch states
   int switchOneState = digitalRead(switchOne);
@@ -70,15 +72,43 @@ void loop() {
   // LED light logic
   if (powered)
   {
-    //do stuff
-    moboLEDs.singleColor(0, 0, 255);
-    frontLEDs.temperatureSense();
-    // frontRightLEDs.singleColor(255, 0, 0);
-    // frontLeftLEDs.singleColor(0, 255, 0);
-    glassLEDs.singleColor(0, 255, 255);
-    // caseLEDs.singleColor(255, 0, 255);
-    reservoirLEDs.singleColor(255, 255, 0);
-    fanLEDs.singleColor(255, 255, 255);
+    switch (mode)
+    {
+    case 0:
+      moboLEDs.temperatureSense();
+      frontLEDs.temperatureSense();
+      glassLEDs.temperatureSense();
+      reservoirLEDs.temperatureSense();
+      fanLEDs.temperatureSense();
+      break;
+    
+    case 1:
+      moboLEDs.singleColor(0, 0, 255);
+      frontLEDs.singleColor(0, 0, 255);
+      glassLEDs.singleColor(0, 0, 255);
+      reservoirLEDs.singleColor(0, 0, 255);
+      fanLEDs.singleColor(0, 0, 255);
+      break;
+
+    case 2:
+      moboLEDs.singleColor(0, 255, 0);
+      frontLEDs.singleColor(0, 255, 0);
+      glassLEDs.singleColor(0, 255, 0);
+      reservoirLEDs.singleColor(0, 255, 0);
+      fanLEDs.singleColor(0, 255, 0);
+      break;
+
+    case 3:
+      moboLEDs.singleColor(255, 0, 0);
+      frontLEDs.singleColor(255, 0, 0);
+      glassLEDs.singleColor(255, 0, 0);
+      reservoirLEDs.singleColor(255, 0, 0);
+      fanLEDs.singleColor(255, 0, 0);
+      break;
+
+    default:
+      break;
+    }
     indicatorLED.singleColor(255, 255, 255);
   }
   else
@@ -92,15 +122,35 @@ void loop() {
     indicatorLED.singleColor(8, 0, 0);
   }
 
+
+  // do things when switches are pressed
   // turn LEDs off if switch one is pressed
-  if (switchOneState == LOW && prevSwitchOneState == HIGH)
+  if (switchOneState == HIGH && prevSwitchOneState == LOW)
   {
     powered = !powered;
+  }
+  // mode down when switch two is pressed
+  if (switchTwoState == HIGH && prevSwitchTwoState == LOW)
+  {
+    mode--;
+    if (mode < 0)
+    {
+      mode = modes - 1;
+    }
+  }
+  // mode up when switch three is pressed
+  if (switchThreeState == HIGH && prevSwitchThreeState == LOW)
+  {
+    mode++;
+    if (mode >= modes)
+    {
+      mode = 0;
+    }
   }
     
   // update previous states
   prevSwitchOneState = switchOneState;
-  prevSwitchTwoState = switchThreeState;
+  prevSwitchTwoState = switchTwoState;
   prevSwitchThreeState = switchThreeState;
 }
 
