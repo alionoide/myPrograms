@@ -119,7 +119,7 @@ void loop() {
     frontLEDs.clear();
     fanLEDs.clear();
     reservoirLEDs.clear();
-    indicatorLED.singleColor(8, 0, 0);
+    indicatorLED.singleColor(6, 0, 0);
   }
 
 
