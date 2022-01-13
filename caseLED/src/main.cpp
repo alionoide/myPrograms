@@ -5,9 +5,9 @@ int getTemp();
 
 
 Strip<13, 12> moboLEDs(150);
-Strip<12, 124> frontLEDs(150);
-// Strip<12, 124> frontLeftLEDs(150, 0, 62);
-// Strip<12, 124> frontRightLEDs(150, 62, 124, true);
+// Strip<12, 124> frontLEDs(150);
+Strip<12, 62> frontRightLEDs(150, 62, 124, true);
+Strip<12, 62> frontLeftLEDs(150, 0, 62);
 Strip<11, 244> glassLEDs(150);
 // Strip<11, 244> caseLEDs(150, 0, 115);
 // Strip<11, 244> glassLEDs(150, 115, 244);
@@ -31,9 +31,9 @@ void setup() {
   pinMode(switchThree, INPUT);
 
   moboLEDs.init();
-  frontLEDs.init();
-  // frontLeftLEDs.init();
-  // frontRightLEDs.init();
+  // frontLEDs.init();
+  frontRightLEDs.init();
+  frontLeftLEDs.init();
   // caseLEDs.init();
   glassLEDs.init();
   reservoirLEDs.init();
@@ -41,9 +41,9 @@ void setup() {
   indicatorLED.init();
 
   moboLEDs.singleColor(0, 0, 255);
-  frontLEDs.singleColor(0, 255, 0);
-  // frontRightLEDs.singleColor(255, 0, 0);
-  // frontLeftLEDs.singleColor(0, 255, 0);
+  // frontLEDs.singleColor(0, 255, 0);
+  frontRightLEDs.singleColor(255, 0, 0);
+  frontLeftLEDs.singleColor(0, 255, 0);
   glassLEDs.singleColor(0, 255, 255);
   // caseLEDs.singleColor(255, 0, 255);
   reservoirLEDs.singleColor(255, 255, 0);
@@ -52,7 +52,7 @@ void setup() {
 
 }
 
-void loop() {
+void loop() {/*
   // put your main code here, to run repeatedly:
 
   //setup variables
@@ -152,7 +152,7 @@ void loop() {
   prevSwitchOneState = switchOneState;
   prevSwitchTwoState = switchTwoState;
   prevSwitchThreeState = switchThreeState;
-}
+*/}
 
 int getTemp()
 {
