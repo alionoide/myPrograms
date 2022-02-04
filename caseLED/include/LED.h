@@ -5,16 +5,19 @@ FASTLED_USING_NAMESPACE
 #define LED_TYPE WS2812B
 #define COLOR_ORDER GRB
 
+int checkArry[50] = {0};
+
+// I think that if you can use a seperate arroy with classes in ti it would probablt work well
 
 template<int pin, int ledCount>
 class Strip{
-    
 public:
     int brightness = 150;
     int offset = 0;
     int end = 0;
     bool reverse = false;
     CRGB ledStrip[ledCount];
+    
 
     Strip(int brightness, int offset = 0, int end = ledCount, bool reverse = false)
     {
@@ -26,8 +29,17 @@ public:
     
     void init()
     {
-        FastLED.addLeds<LED_TYPE,pin,COLOR_ORDER>(ledStrip, ledCount).setCorrection(TypicalLEDStrip);
-        FastLED.setBrightness(brightness);
+        if (checkArry[pin] == 0)
+        {
+            checkArry[pin]++;
+            FastLED.addLeds<LED_TYPE,pin,COLOR_ORDER>(ledStrip, ledCount).setCorrection(TypicalLEDStrip);
+            FastLED.setBrightness(brightness);
+
+        }
+        else
+        {
+            // deal with others here
+        }
     }
     
     void clear()
