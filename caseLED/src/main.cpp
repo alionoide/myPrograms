@@ -2,15 +2,13 @@
 
 
 int getTemp();
-
+void clearAll();
 
 Strip<13, 12> moboLEDs(150);
-Strip<12, 124> frontLEDs(150);
-// Strip<12, 62> frontRightLEDs(150, 63, 124, true);
-// Strip<12, 62> frontLeftLEDs(150, 0, 62);
-Strip<11, 244> glassLEDs(150);
-// Strip<11, 244> caseLEDs(150, 0, 115);
-// Strip<11, 244> glassLEDs(150, 115, 244);
+Strip<12, 124> frontRightLEDs(150, 62, 124, true);
+Strip<12, 124> frontLeftLEDs(&frontRightLEDs, 0, 62, false);
+Strip<11, 244> caseLEDs(150, 0, 115);
+Strip<11, 244> glassLEDs(&caseLEDs, 115, 244);
 Strip<10, 7> reservoirLEDs(150);
 Strip<9, 16> fanLEDs(150);
 Strip<7, 1> indicatorLED(150);
@@ -30,19 +28,8 @@ void setup() {
   pinMode(switchTwo, INPUT);
   pinMode(switchThree, INPUT);
 
-  moboLEDs.init();
-  frontLEDs.init();
-  // frontRightLEDs.init();
-  // frontRightLEDs.clear();
-  // frontLeftLEDs.init(); 
-  // caseLEDs.init();
-  glassLEDs.init();
-  reservoirLEDs.init();
-  fanLEDs.init();
-  indicatorLED.init();
-
   moboLEDs.singleColor(0, 0, 255);
-  frontLEDs.singleColor(0, 255, 0);
+  //frontLEDs.singleColor(0, 255, 0);
   glassLEDs.singleColor(0, 255, 255);
   // caseLEDs.singleColor(255, 0, 255);
   reservoirLEDs.singleColor(255, 255, 0);
@@ -61,7 +48,7 @@ void loop() {
 
   static bool powered = true;
   static int mode = 0; // current mode
-  static int modes = 4; // total modes
+  static int modes = 5; // total modes
 
   // check the switch states
   int switchOneState = digitalRead(switchOne);
@@ -75,36 +62,52 @@ void loop() {
     {
     case 0:
       moboLEDs.temperatureSense();
-      frontLEDs.temperatureSense();
+      frontLeftLEDs.temperatureSense();
+      frontRightLEDs.temperatureSense();
       glassLEDs.temperatureSense();
+      caseLEDs.temperatureSense();
       reservoirLEDs.temperatureSense();
       fanLEDs.temperatureSense();
       break;
     
     case 1:
       moboLEDs.singleColor(0, 0, 255);
-      frontLEDs.singleColor(0, 0, 255);
+      frontLeftLEDs.singleColor(0, 0, 255);
+      frontRightLEDs.singleColor(0, 0, 255);
       glassLEDs.singleColor(0, 0, 255);
+      caseLEDs.singleColor(0, 0, 255);
       reservoirLEDs.singleColor(0, 0, 255);
       fanLEDs.singleColor(0, 0, 255);
       break;
 
     case 2:
       moboLEDs.singleColor(0, 255, 0);
-      frontLEDs.singleColor(0, 255, 0);
+      frontLeftLEDs.singleColor(0, 255, 0);
+      frontRightLEDs.singleColor(0, 255, 0);
       glassLEDs.singleColor(0, 255, 0);
+      caseLEDs.singleColor(0, 255, 0);
       reservoirLEDs.singleColor(0, 255, 0);
       fanLEDs.singleColor(0, 255, 0);
       break;
 
     case 3:
       moboLEDs.singleColor(255, 0, 0);
-      frontLEDs.singleColor(255, 0, 0);
+      frontLeftLEDs.singleColor(255, 0, 0);
+      frontRightLEDs.singleColor(255, 0, 0);
       glassLEDs.singleColor(255, 0, 0);
+      caseLEDs.singleColor(255, 0, 0);
       reservoirLEDs.singleColor(255, 0, 0);
       fanLEDs.singleColor(255, 0, 0);
       break;
-
+    case 4:
+      glassLEDs.firefly(CRGB(0,0,100));
+      caseLEDs.firefly();
+      moboLEDs.firefly();
+      frontLeftLEDs.firefly();
+      frontRightLEDs.firefly();
+      reservoirLEDs.firefly();
+      fanLEDs.firefly();
+      break;
     default:
       break;
     }
@@ -113,11 +116,7 @@ void loop() {
   else
   {
     // turn off LEDs
-    moboLEDs.clear();
-    glassLEDs.clear();
-    frontLEDs.clear();
-    fanLEDs.clear();
-    reservoirLEDs.clear();
+    clearAll();
     indicatorLED.singleColor(6, 0, 0);
   }
 
@@ -132,6 +131,7 @@ void loop() {
   if (switchTwoState == HIGH && prevSwitchTwoState == LOW)
   {
     mode--;
+    clearAll();
     if (mode < 0)
     {
       mode = modes - 1;
@@ -141,6 +141,7 @@ void loop() {
   if (switchThreeState == HIGH && prevSwitchThreeState == LOW)
   {
     mode++;
+    clearAll();
     if (mode >= modes)
     {
       mode = 0;
@@ -157,4 +158,15 @@ int getTemp()
   int maxTemp = 125;
   int minTemp = -55;
   return (analogRead(tempSensor) / 1024.0) * (maxTemp - minTemp) + minTemp;
+}
+
+void clearAll()
+{
+  moboLEDs.clear();
+  glassLEDs.clear();
+  caseLEDs.clear();
+  frontLeftLEDs.clear();
+  frontRightLEDs.clear();
+  fanLEDs.clear();
+  reservoirLEDs.clear();
 }

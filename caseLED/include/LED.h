@@ -5,9 +5,10 @@ FASTLED_USING_NAMESPACE
 #define LED_TYPE WS2812B
 #define COLOR_ORDER GRB
 
-int checkArry[50] = {0};
 
 // I think that if you can use a seperate arroy with classes in ti it would probablt work well
+
+
 
 template<int pin, int ledCount>
 class Strip{
@@ -17,6 +18,7 @@ public:
     int end = 0;
     bool reverse = false;
     CRGB ledStrip[ledCount];
+    Strip* target;
     
 
     Strip(int brightness, int offset = 0, int end = ledCount, bool reverse = false)
@@ -25,28 +27,25 @@ public:
         this->offset = offset;
         this->end = end;
         this->reverse = reverse;
+        target = this;
+    
+        FastLED.addLeds<LED_TYPE,pin,COLOR_ORDER>(ledStrip, ledCount).setCorrection(TypicalLEDStrip);
+        FastLED.setBrightness(brightness);
     }
     
-    void init()
+    Strip(Strip* copy, int offset = 0, int end = ledCount, bool reverse = false)
     {
-        if (checkArry[pin] == 0)
-        {
-            checkArry[pin]++;
-            FastLED.addLeds<LED_TYPE,pin,COLOR_ORDER>(ledStrip, ledCount).setCorrection(TypicalLEDStrip);
-            FastLED.setBrightness(brightness);
-
-        }
-        else
-        {
-            // deal with others here
-        }
+        target = copy;
+        this->offset = offset;
+        this->end = end;
+        this->reverse = reverse;
     }
     
     void clear()
     {
         for (int i = 0 + offset; i < end; i++)
         {
-            this->ledStrip[i] = CRGB(0, 0, 0);
+            target->ledStrip[i] = CRGB(0, 0, 0);
         }
         FastLED.show();
     }
@@ -55,7 +54,7 @@ public:
     {
         for (int i = 0 + offset; i < end; i++)
         {
-            this->ledStrip[i] = CRGB(r, g, b);
+            target->ledStrip[i] = CRGB(r, g, b);
         }
         FastLED.show();
     }
@@ -78,4 +77,33 @@ public:
         }
         singleColor(red, 0, blue);
     } 
+
+    void firefly(CRGB max = CRGB(255, 255, 0), int steps = 25)
+    {
+        static int* ptr = new int [ledCount];
+        randomSeed(timer0_millis);
+        for (int i = offset; i < end; i++)
+        {
+            if (ptr[i] > 0 && ptr[i] < steps)
+            {
+                target->ledStrip[i] += CRGB(max.r/steps, max.g/steps, max.b/steps);
+                ptr[i]++;
+            }
+            else if(ptr[i] == steps)
+            {
+                target->ledStrip[i] -= CRGB(max.r/steps, max.g/steps, max.b/steps);
+                if( target->ledStrip[i] == CRGB(0, 0, 0))
+                {
+                    ptr[i] = -1;
+                }
+            }
+            else if(random(0, 50) < 1)
+            {
+                ptr[i]++;
+            }
+            
+        }
+
+        FastLED.show();
+    }
 };
