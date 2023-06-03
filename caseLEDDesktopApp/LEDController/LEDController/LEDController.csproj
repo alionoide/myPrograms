@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Main\ApplicationLogic\UIInterfaces\Model\" />
+    <Folder Include="Main\ApplicationLogic\Model\" />
+    <Folder Include="Main\ViewModel\Controller\" />
+    <Folder Include="Main\ViewModel\VMO\" />
+    <Folder Include="TestTab\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.IO.Ports" Version="7.0.0" />
+  </ItemGroup>
+
+</Project>

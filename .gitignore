@@ -359,3 +359,5 @@ healthchecksdb
 *.exe
 *.obj
 *.txt
+/bogoBogoSort/.vscode
+/caseLED/.vscode/extensions.json
