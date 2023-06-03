@@ -139,9 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="bogo.cpp" />
-    <ClCompile Include="bogoTests.cpp" />
-    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="PascalTriangle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bogo.h" />
