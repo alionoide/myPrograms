@@ -8,11 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Main\ApplicationLogic\UIInterfaces\Model\" />
     <Folder Include="Main\ApplicationLogic\Model\" />
+    <Folder Include="Main\ApplicationLogic\UIInterfaces\" />
     <Folder Include="Main\ViewModel\Controller\" />
     <Folder Include="Main\ViewModel\VMO\" />
-    <Folder Include="TestTab\" />
+    <Folder Include="PresetTab\" />
   </ItemGroup>
 
   <ItemGroup>

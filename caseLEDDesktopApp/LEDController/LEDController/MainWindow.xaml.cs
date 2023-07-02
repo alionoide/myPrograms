@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LEDController.Main;
+using System;
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
@@ -21,9 +22,13 @@ namespace LEDController
     /// </summary>
     public partial class MainWindow : Window
     {
+        LEDMain main = null;
+
         public MainWindow()
         {
             InitializeComponent();
+            main = new LEDMain();
+            this.Content = main.view;
             SerialPort.GetPortNames().ToList().ForEach(portName => comList.Items.Add(portName));
         }
 
